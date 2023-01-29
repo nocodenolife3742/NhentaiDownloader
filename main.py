@@ -27,7 +27,7 @@ def image_downloader(img_url: str):
         if chunk:
             f.write(chunk)
     f.close()
-    return f"Download complete: {img_url}" #this is a new line
+    return f"Download complete: {img_url}"
 
 
 def run_downloader(process: int, images_url: list):
