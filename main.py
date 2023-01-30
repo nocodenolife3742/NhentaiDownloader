@@ -3,7 +3,9 @@ import time
 from multiprocessing.pool import ThreadPool
 from bs4 import BeautifulSoup
 
-#122158651254851
+# 122158651254851
+
+
 def image_downloader(img_url: str):
     print(f"Downloading: {img_url}")
     res = requests.get(img_url, stream=True, headers=headers)
@@ -57,8 +59,14 @@ def get_content(manga_id: int):
     return BeautifulSoup(res.text, "html.parser")
 
 
-def get_all_urls(media_id: int, pages: int):
-    return [f"https://translate.google.com/translate?sl=zh-TW&tl=en&hl=zh-TW&u=i3.nhentai.net/galleries/{media_id}/{i+1}.jpg" for i in range(pages)]
+def get_data_type(manga_id: int):
+    data_type = str(web_content.find_all("meta")[
+                    3]).split("/")[5].split(".")[1].split("\"")[0]
+    return data_type
+
+
+def get_all_urls(media_id: int, pages: int, data_type: str):
+    return [f"https://translate.google.com/translate?sl=zh-TW&tl=en&hl=zh-TW&u=i3.nhentai.net/galleries/{media_id}/{i+1}.{data_type}" for i in range(pages)]
 
 
 if __name__ == "__main__":
@@ -74,9 +82,8 @@ if __name__ == "__main__":
         exit()
     media_id = get_media_id(web_content)
     pages = get_pages(web_content)
-    urls = get_all_urls(media_id, pages)
-
+    data_type = get_data_type(web_content)
+    urls = get_all_urls(media_id, pages, data_type)
     run_downloader(process_count, urls)
-
     end = time.time()
     print("Total download time : " + str(end-start) + " s")
