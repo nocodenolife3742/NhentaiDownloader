@@ -3,9 +3,6 @@ import time
 from multiprocessing.pool import ThreadPool
 from bs4 import BeautifulSoup
 
-# 122158651254851
-
-
 def image_downloader(img_url: str):
     print(f"Downloading: {img_url}")
     res = requests.get(img_url, stream=True, headers=headers)
